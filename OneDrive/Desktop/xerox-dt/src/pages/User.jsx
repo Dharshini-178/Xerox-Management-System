@@ -1,20 +1,7 @@
-import { useState } from "react";
-import QRCode from "qrcode.react";
-
 export default function User() {
-  const [amount, setAmount] = useState(0);
-  const [paid, setPaid] = useState(false);
-
-  const generateAmount = () => {
-    let total = 50; // demo base price
-    setAmount(total);
-  };
-
   const submitJob = () => {
-    if (!paid) return alert("Please complete payment first");
-
     const jobs = JSON.parse(localStorage.getItem("jobs")) || [];
-    jobs.push({ amount, status: "Pending" });
+    jobs.push({ status: "Pending" });
     localStorage.setItem("jobs", JSON.stringify(jobs));
     alert("Print job submitted!");
   };
@@ -51,25 +38,6 @@ export default function User() {
         </div>
 
         <div className="form-card">
-          <h3>Payment</h3>
-
-          <button onClick={generateAmount}>
-            Generate Amount
-          </button>
-
-          {amount > 0 && (
-            <>
-              <p>Total: ₹{amount}</p>
-              <QRCode value={`Pay ₹${amount}`} />
-            </>
-          )}
-
-          <label className="check">
-            <input type="checkbox"
-              onChange={e=>setPaid(e.target.checked)} />
-            Payment Completed
-          </label>
-
           <button onClick={submitJob}>
             Submit Print Job
           </button>
@@ -79,3 +47,4 @@ export default function User() {
     </div>
   );
 }
+

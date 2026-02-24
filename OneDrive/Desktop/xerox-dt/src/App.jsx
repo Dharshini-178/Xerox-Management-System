@@ -261,13 +261,7 @@ function StaffDashboard({ setPage }) {
   const [pages, setPages] = useState(1);
   const [orientation, setOrientation] = useState("vertical");
   const [printType, setPrintType] = useState("assignment");
-  const [paid, setPaid] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  
-
-  const pricePerPage = color === "color" ? 5 : 2;
-  const bindingCharge = printType === "binding" ? 30 : 0;
-  const totalAmount = copies * pages * pricePerPage + bindingCharge;
 
   if (submitted) {
     return (
@@ -275,11 +269,10 @@ function StaffDashboard({ setPage }) {
         <div className="dashboard-card">
           <h1>✅ Order Submitted</h1>
           <p className="dashboard-text">
-  Your document has been sent for printing.<br />
-  Print Type: <b>{printType}</b><br />
-  Orientation: <b>{orientation === "vertical" ? "Vertical" : "Horizontal"}</b>
-</p>
-
+            Your document has been sent for printing.<br />
+            Print Type: <b>{printType}</b><br />
+            Orientation: <b>{orientation === "vertical" ? "Vertical" : "Horizontal"}</b>
+          </p>
 
           <button className="logout-btn" onClick={() => setPage("login")}>
             Logout
@@ -315,7 +308,7 @@ function StaffDashboard({ setPage }) {
         <div className="print-options">
 
           <div className="option">
-            <label>Print Type</label>
+            <label>Color</label>
             <select value={color} onChange={(e) => setColor(e.target.value)}>
               <option value="bw">Black & White</option>
               <option value="color">Color</option>
@@ -330,7 +323,6 @@ function StaffDashboard({ setPage }) {
               <option value="binding">Binding</option>
             </select>
           </div>
-
 
           <div className="option">
             <label>Orientation</label>
@@ -365,32 +357,9 @@ function StaffDashboard({ setPage }) {
 
         </div>
 
-        {/* Amount */}
-        <div className="amount-box">
-          Total Amount: ₹ <b>{totalAmount}</b>
-        </div>
-
-        {/* QR Payment */}
-        <div className="qr-box">
-          <p>Scan & Pay</p>
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=CollegeXeroxPay"
-            alt="QR Code"
-          />
-
-          <label className="paid-check">
-            <input
-              type="checkbox"
-              checked={paid}
-              onChange={(e) => setPaid(e.target.checked)}
-            />
-            I have paid ₹{totalAmount}
-          </label>
-        </div>
-
         <button
           className="print-btn"
-          disabled={!file || !paid}
+          disabled={!file}
           onClick={() => setSubmitted(true)}
         >
           📤 Submit Print Request
