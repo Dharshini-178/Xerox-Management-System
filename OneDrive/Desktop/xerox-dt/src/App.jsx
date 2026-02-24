@@ -269,6 +269,12 @@ function StaffDashboard({ setPage }) {
   const [paperQuantity, setPaperQuantity] = useState(1);
   const [paperSubmitted, setPaperSubmitted] = useState(false);
 
+  // Change password states
+  const [showChangePassword, setShowChangePassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+
   if (submitted) {
     return (
       <div className="dashboard-bg">
@@ -414,7 +420,7 @@ function StaffDashboard({ setPage }) {
 
         {/* Right Content Area - 70% */}
         <div className="staff-content">
-          {selectedOption === "profile" && (
+{selectedOption === "profile" && (
             <>
               <div className="content-header">
                 <h2>👤 My Profile</h2>
@@ -435,19 +441,75 @@ function StaffDashboard({ setPage }) {
                     <span>john.doe@xerox.com</span>
                   </div>
                   <div className="profile-field">
-                    <label>Role</label>
-                    <span>Staff</span>
+                    <label>Phone Number</label>
+                    <span>1234567890</span>
                   </div>
                   <div className="profile-field">
                     <label>Department</label>
-                    <span>Printing Services</span>
+                    <span>ECE</span>
                   </div>
                   <div className="profile-field">
                     <label>Joined Date</label>
                     <span>Jan 2024</span>
                   </div>
                 </div>
+                <div className="change-password-link">
+                  <span onClick={() => setShowChangePassword(true)}>🔐 Change Password</span>
+                </div>
               </div>
+
+              {/* Change Password Popup */}
+              {showChangePassword && (
+                <div className="popup-overlay" onClick={() => setShowChangePassword(false)}>
+                  <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+                    <h3>Change Password</h3>
+                    <div className="popup-input-group">
+                      <input
+                        type="password"
+                        placeholder="Enter new password"
+                        value={newPassword}
+                        onChange={(e) => {
+                          setNewPassword(e.target.value);
+                          setPasswordError("");
+                        }}
+                      />
+                    </div>
+                    {passwordError && <div className="popup-error">{passwordError}</div>}
+                    {passwordSuccess && <div className="popup-success">Password changed successfully!</div>}
+                    <div className="popup-buttons">
+                      <button 
+                        className="popup-cancel" 
+                        onClick={() => {
+                          setShowChangePassword(false);
+                          setNewPassword("");
+                          setPasswordError("");
+                          setPasswordSuccess(false);
+                        }}
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        className="popup-submit"
+                        onClick={() => {
+                          if (!newPassword || newPassword.length < 4) {
+                            setPasswordError("Password must be at least 4 characters");
+                            return;
+                          }
+                          // Here you would typically save the new password
+                          setPasswordSuccess(true);
+                          setTimeout(() => {
+                            setShowChangePassword(false);
+                            setNewPassword("");
+                            setPasswordSuccess(false);
+                          }, 2000);
+                        }}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           )}
 
@@ -550,20 +612,12 @@ function StaffDashboard({ setPage }) {
                     <p>Standard office paper</p>
                   </div>
                   <div 
-                    className={`paper-type-card ${paperType === "A3" ? "selected" : ""}`}
-                    onClick={() => setPaperType("A3")}
+                    className={`paper-type-card ${paperType === "Bond" ? "selected" : ""}`}
+                    onClick={() => setPaperType("Bond")}
                   >
                     <div className="icon">📑</div>
-                    <h4>A3 Paper</h4>
-                    <p>Large format</p>
-                  </div>
-                  <div 
-                    className={`paper-type-card ${paperType === "Legal" ? "selected" : ""}`}
-                    onClick={() => setPaperType("Legal")}
-                  >
-                    <div className="icon">📋</div>
-                    <h4>Legal Size</h4>
-                    <p>Legal documents</p>
+                    <h4>Bond Paper</h4>
+                    <p>High quality paper</p>
                   </div>
                 </div>
 

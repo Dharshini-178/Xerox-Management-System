@@ -628,3 +628,125 @@ body {
   color: #64748b;
   margin-bottom: 25px;
 }
+
+/* ---------- CHANGE PASSWORD ---------- */
+
+.change-password-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.change-password-link span {
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.change-password-link span:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.popup-content h3 {
+  color: #1e3c72;
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.popup-input-group {
+  margin-bottom: 15px;
+}
+
+.popup-input-group input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.popup-input-group input:focus {
+  border-color: #2563eb;
+}
+
+.popup-error {
+  color: #e63946;
+  font-size: 13px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.popup-success {
+  color: #10b981;
+  font-size: 13px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.popup-cancel,
+.popup-submit {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.popup-cancel {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+}
+
+.popup-cancel:hover {
+  background: #e2e8f0;
+}
+
+.popup-submit {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  border: none;
+  color: #fff;
+}
+
+.popup-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
