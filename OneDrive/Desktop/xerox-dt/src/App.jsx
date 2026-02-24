@@ -255,6 +255,7 @@ function Register({ setPage }) {
 /* ---------- STAFF DASHBOARD ---------- */
 
 function StaffDashboard({ setPage }) {
+  const [selectedOption, setSelectedOption] = useState("profile");
   const [file, setFile] = useState(null);
   const [color, setColor] = useState("bw");
   const [copies, setCopies] = useState(1);
@@ -262,21 +263,111 @@ function StaffDashboard({ setPage }) {
   const [orientation, setOrientation] = useState("vertical");
   const [printType, setPrintType] = useState("assignment");
   const [submitted, setSubmitted] = useState(false);
+  
+  // Paper request states
+  const [paperType, setPaperType] = useState("");
+  const [paperQuantity, setPaperQuantity] = useState(1);
+  const [paperSubmitted, setPaperSubmitted] = useState(false);
 
   if (submitted) {
     return (
       <div className="dashboard-bg">
-        <div className="dashboard-card">
-          <h1>✅ Order Submitted</h1>
-          <p className="dashboard-text">
-            Your document has been sent for printing.<br />
-            Print Type: <b>{printType}</b><br />
-            Orientation: <b>{orientation === "vertical" ? "Vertical" : "Horizontal"}</b>
-          </p>
+        <div className="staff-layout">
+          <div className="staff-sidebar">
+            <div className="sidebar-profile">
+              <div className="sidebar-avatar">👤</div>
+              <h3>John Doe</h3>
+              <p>Staff ID: 101</p>
+            </div>
+            <div className="sidebar-menu">
+              <button className="menu-item" onClick={() => { setSelectedOption("profile"); setSubmitted(false); }}>
+                <span className="menu-icon">👤</span> Profile
+              </button>
+              <button className="menu-item" onClick={() => { setSelectedOption("printing"); setSubmitted(false); }}>
+                <span className="menu-icon">🖨</span> Printing
+              </button>
+              <button className="menu-item" onClick={() => { setSelectedOption("paper"); setSubmitted(false); }}>
+                <span className="menu-icon">📄</span> Paper Request
+              </button>
+            </div>
+            <button className="sidebar-logout" onClick={() => setPage("login")}>
+              🚪 Logout
+            </button>
+          </div>
+          <div className="staff-content">
+            <div className="content-header">
+              <h2>✅ Order Submitted</h2>
+              <p>Your document has been sent for printing.</p>
+            </div>
+            <div className="profile-section">
+              <div className="profile-info">
+                <div className="profile-field">
+                  <label>Print Type</label>
+                  <span>{printType}</span>
+                </div>
+                <div className="profile-field">
+                  <label>Orientation</label>
+                  <span>{orientation === "vertical" ? "Vertical" : "Horizontal"}</span>
+                </div>
+                <div className="profile-field">
+                  <label>Color</label>
+                  <span>{color === "bw" ? "Black & White" : "Color"}</span>
+                </div>
+                <div className="profile-field">
+                  <label>Copies</label>
+                  <span>{copies}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-          <button className="logout-btn" onClick={() => setPage("login")}>
-            Logout
-          </button>
+  if (paperSubmitted) {
+    return (
+      <div className="dashboard-bg">
+        <div className="staff-layout">
+          <div className="staff-sidebar">
+            <div className="sidebar-profile">
+              <div className="sidebar-avatar">👤</div>
+              <h3>John Doe</h3>
+              <p>Staff ID: 101</p>
+            </div>
+            <div className="sidebar-menu">
+              <button className="menu-item" onClick={() => { setSelectedOption("profile"); setPaperSubmitted(false); }}>
+                <span className="menu-icon">👤</span> Profile
+              </button>
+              <button className="menu-item" onClick={() => { setSelectedOption("printing"); setPaperSubmitted(false); }}>
+                <span className="menu-icon">🖨</span> Printing
+              </button>
+              <button className="menu-item" onClick={() => { setSelectedOption("paper"); setPaperSubmitted(false); }}>
+                <span className="menu-icon">📄</span> Paper Request
+              </button>
+            </div>
+            <button className="sidebar-logout" onClick={() => setPage("login")}>
+              🚪 Logout
+            </button>
+          </div>
+          <div className="staff-content">
+            <div className="content-header">
+              <h2>✅ Paper Request Submitted</h2>
+              <p>Your paper request has been sent to admin.</p>
+            </div>
+            <div className="profile-section">
+              <div className="profile-info">
+                <div className="profile-field">
+                  <label>Paper Type</label>
+                  <span>{paperType}</span>
+                </div>
+                <div className="profile-field">
+                  <label>Quantity</label>
+                  <span>{paperQuantity} reams</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -284,91 +375,224 @@ function StaffDashboard({ setPage }) {
 
   return (
     <div className="dashboard-bg">
-      <div className="dashboard-card">
-
-        <h1>👔 Staff Dashboard</h1>
-        <p className="dashboard-text">
-          Upload & configure your print
-        </p>
-
-        {/* Upload */}
-        <div className="upload-box">
-          <input
-            type="file"
-            id="fileUpload"
-            hidden
-            onChange={(e) => setFile(e.target.files[0])}
-          />
-          <label htmlFor="fileUpload" className="upload-label">
-            📄 {file ? file.name : "Click to upload document"}
-          </label>
-        </div>
-
-        {/* Print Options */}
-        <div className="print-options">
-
-          <div className="option">
-            <label>Color</label>
-            <select value={color} onChange={(e) => setColor(e.target.value)}>
-              <option value="bw">Black & White</option>
-              <option value="color">Color</option>
-            </select>
+      <div className="staff-layout">
+        {/* Left Sidebar - 30% */}
+        <div className="staff-sidebar">
+          <div className="sidebar-profile">
+            <div className="sidebar-avatar">👤</div>
+            <h3>John Doe</h3>
+            <p>Staff ID: 101</p>
           </div>
-
-          <div className="option">
-            <label>Print Type</label>
-            <select value={printType} onChange={(e) => setPrintType(e.target.value)} >
-              <option value="assignment">Assignment</option>
-              <option value="report">Report</option>
-              <option value="binding">Binding</option>
-            </select>
-          </div>
-
-          <div className="option">
-            <label>Orientation</label>
-            <select
-              value={orientation}
-              onChange={(e) => setOrientation(e.target.value)}
+          
+          <div className="sidebar-menu">
+            <button 
+              className={`menu-item ${selectedOption === "profile" ? "active" : ""}`}
+              onClick={() => setSelectedOption("profile")}
             >
-              <option value="vertical">Vertical (Portrait)</option>
-              <option value="horizontal">Horizontal (Landscape)</option>
-            </select>
+              <span className="menu-icon">👤</span> Profile
+            </button>
+            
+            <button 
+              className={`menu-item ${selectedOption === "printing" ? "active" : ""}`}
+              onClick={() => setSelectedOption("printing")}
+            >
+              <span className="menu-icon">🖨</span> Printing
+            </button>
+            
+            <button 
+              className={`menu-item ${selectedOption === "paper" ? "active" : ""}`}
+              onClick={() => setSelectedOption("paper")}
+            >
+              <span className="menu-icon">📄</span> Paper Request
+            </button>
           </div>
 
-          <div className="option">
-            <label>No. of Copies</label>
-            <input
-              type="number"
-              min="1"
-              value={copies}
-              onChange={(e) => setCopies(e.target.value)}
-            />
-          </div>
-
-          <div className="option">
-            <label>Pages per Copy</label>
-            <input
-              type="number"
-              min="1"
-              value={pages}
-              onChange={(e) => setPages(e.target.value)}
-            />
-          </div>
-
+          <button className="sidebar-logout" onClick={() => setPage("login")}>
+            🚪 Logout
+          </button>
         </div>
 
-        <button
-          className="print-btn"
-          disabled={!file}
-          onClick={() => setSubmitted(true)}
-        >
-          📤 Submit Print Request
-        </button>
+        {/* Right Content Area - 70% */}
+        <div className="staff-content">
+          {selectedOption === "profile" && (
+            <>
+              <div className="content-header">
+                <h2>👤 My Profile</h2>
+                <p>View your staff information</p>
+              </div>
+              <div className="profile-section">
+                <div className="profile-info">
+                  <div className="profile-field">
+                    <label>Staff ID</label>
+                    <span>101</span>
+                  </div>
+                  <div className="profile-field">
+                    <label>Name</label>
+                    <span>John Doe</span>
+                  </div>
+                  <div className="profile-field">
+                    <label>Email</label>
+                    <span>john.doe@xerox.com</span>
+                  </div>
+                  <div className="profile-field">
+                    <label>Role</label>
+                    <span>Staff</span>
+                  </div>
+                  <div className="profile-field">
+                    <label>Department</label>
+                    <span>Printing Services</span>
+                  </div>
+                  <div className="profile-field">
+                    <label>Joined Date</label>
+                    <span>Jan 2024</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
-        <button className="logout-btn" onClick={() => setPage("login")}>
-          Logout
-        </button>
+          {selectedOption === "printing" && (
+            <>
+              <div className="content-header">
+                <h2>🖨 Print Request</h2>
+                <p>Upload & configure your print</p>
+              </div>
+              <div className="print-section">
+                {/* Upload */}
+                <div className="upload-box">
+                  <input
+                    type="file"
+                    id="fileUpload"
+                    hidden
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                  <label htmlFor="fileUpload" className="upload-label">
+                    📄 {file ? file.name : "Click to upload document"}
+                  </label>
+                </div>
 
+                {/* Print Options */}
+                <div className="print-options-grid">
+                  <div className="option">
+                    <label>Color</label>
+                    <select value={color} onChange={(e) => setColor(e.target.value)}>
+                      <option value="bw">Black & White</option>
+                      <option value="color">Color</option>
+                    </select>
+                  </div>
+
+                  <div className="option">
+                    <label>Print Type</label>
+                    <select value={printType} onChange={(e) => setPrintType(e.target.value)}>
+                      <option value="assignment">Assignment</option>
+                      <option value="report">Report</option>
+                      <option value="binding">Binding</option>
+                    </select>
+                  </div>
+
+                  <div className="option">
+                    <label>Orientation</label>
+                    <select
+                      value={orientation}
+                      onChange={(e) => setOrientation(e.target.value)}
+                    >
+                      <option value="vertical">Vertical (Portrait)</option>
+                      <option value="horizontal">Horizontal (Landscape)</option>
+                    </select>
+                  </div>
+
+                  <div className="option">
+                    <label>No. of Copies</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={copies}
+                      onChange={(e) => setCopies(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="option">
+                    <label>Pages per Copy</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={pages}
+                      onChange={(e) => setPages(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <button
+                  className="print-btn"
+                  disabled={!file}
+                  onClick={() => setSubmitted(true)}
+                >
+                  📤 Submit Print Request
+                </button>
+              </div>
+            </>
+          )}
+
+          {selectedOption === "paper" && (
+            <>
+              <div className="content-header">
+                <h2>📄 Paper Request</h2>
+                <p>Request paper supplies</p>
+              </div>
+              <div className="paper-request-section">
+                <div className="paper-type-grid">
+                  <div 
+                    className={`paper-type-card ${paperType === "A4" ? "selected" : ""}`}
+                    onClick={() => setPaperType("A4")}
+                  >
+                    <div className="icon">📄</div>
+                    <h4>A4 Paper</h4>
+                    <p>Standard office paper</p>
+                  </div>
+                  <div 
+                    className={`paper-type-card ${paperType === "A3" ? "selected" : ""}`}
+                    onClick={() => setPaperType("A3")}
+                  >
+                    <div className="icon">📑</div>
+                    <h4>A3 Paper</h4>
+                    <p>Large format</p>
+                  </div>
+                  <div 
+                    className={`paper-type-card ${paperType === "Legal" ? "selected" : ""}`}
+                    onClick={() => setPaperType("Legal")}
+                  >
+                    <div className="icon">📋</div>
+                    <h4>Legal Size</h4>
+                    <p>Legal documents</p>
+                  </div>
+                </div>
+
+                <div className="quantity-selector">
+                  <label>Quantity (reams):</label>
+                  <div className="quantity-controls">
+                    <button 
+                      className="quantity-btn"
+                      onClick={() => setPaperQuantity(Math.max(1, paperQuantity - 1))}
+                    >-</button>
+                    <span className="quantity-value">{paperQuantity}</span>
+                    <button 
+                      className="quantity-btn"
+                      onClick={() => setPaperQuantity(paperQuantity + 1)}
+                    >+</button>
+                  </div>
+                </div>
+
+                <button
+                  className="submit-request-btn"
+                  disabled={!paperType}
+                  onClick={() => setPaperSubmitted(true)}
+                >
+                  📤 Submit Paper Request
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
