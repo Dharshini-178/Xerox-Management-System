@@ -11,6 +11,8 @@ export default function App() {
         <Login setPage={setPage} role={role} setRole={setRole} />
       )}
 
+      {page === "register" && <Register setPage={setPage} />}
+
       {page === "staff" && <StaffDashboard setPage={setPage} />}
 
       {page === "admin" && <AdminDashboard setPage={setPage} />}
@@ -101,6 +103,150 @@ function Login({ setPage, role, setRole }) {
           Admin → admin / admin123
         </p>
 
+        {role === "staff" && (
+          <p className="register-link">
+            New user? <span onClick={() => setPage("register")}>Register</span>
+          </p>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+/* ---------- REGISTER ---------- */
+
+function Register({ setPage }) {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const handleRegister = () => {
+    // Validation
+    if (!email || !username || !password || !phone) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (phone.length !== 10 || isNaN(phone)) {
+      setError("Please enter a valid 10-digit phone number");
+      return;
+    }
+
+    if (password.length < 4) {
+      setError("Password must be at least 4 characters");
+      return;
+    }
+
+    // Save user to localStorage
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    
+    // Check if email already exists
+    if (users.find(u => u.email === email)) {
+      setError("Email already registered");
+      return;
+    }
+
+    users.push({ email, username, password, phone });
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    setSuccess(true);
+    setTimeout(() => {
+      setPage("login");
+    }, 2000);
+  };
+
+  if (success) {
+    return (
+      <div className="login-bg">
+        <div className="login-card">
+          <div className="success-message">
+            <h2>✅ Registration Successful!</h2>
+            <p>Redirecting to login...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="login-bg">
+      <div className="login-card">
+        <h2 className="register-title">Create your account</h2>
+
+        <div className="input-group">
+          <div className="input-icon">📧</div>
+          <input
+            className="login-input"
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError("");
+            }}
+          />
+        </div>
+
+        <div className="input-group">
+          <div className="input-icon">👤</div>
+          <input
+            className="login-input"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setError("");
+            }}
+          />
+        </div>
+
+        <div className="input-group">
+          <div className="input-icon">🔒</div>
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError("");
+            }}
+          />
+        </div>
+
+        <div className="input-group">
+          <div className="input-icon">📱</div>
+          <input
+            className="login-input"
+            type="tel"
+            placeholder="Phone Number"
+            value={phone}
+            maxLength={10}
+            onChange={(e) => {
+              setPhone(e.target.value);
+              setError("");
+            }}
+          />
+        </div>
+
+        {error && <div className="error-text">{error}</div>}
+
+        <button className="login-btn" onClick={handleRegister}>
+          Register
+        </button>
+
+        <p className="register-link">
+          Already have an account? <span onClick={() => setPage("login")}>Login</span>
+        </p>
       </div>
     </div>
   );
