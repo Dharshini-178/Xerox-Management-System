@@ -1,0 +1,292 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* Background */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Root Centering */
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main Card */
+.login-card {
+  width: 420px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+/* Role Switch */
+.role-switch {
+  display: flex;
+  background: #eef2f7;
+  padding: 6px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.role-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.role-btn.active {
+  background: linear-gradient(135deg, #2563eb, #14b8a6);
+  color: white;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+/* Title */
+.login-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 22px;
+  color: #0f172a;
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 14px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.input-icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.login-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 14px;
+  font-size: 15px;
+  background: transparent;
+}
+
+/* Login Button */
+.login-btn {
+  width: 100%;
+  border: none;
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.45);
+  transition: transform 0.2s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Credentials Info */
+.login-info {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.error-text {
+  color: #e63946;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+/* ---------- DASHBOARD ---------- */
+
+.dashboard-bg {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+}
+
+.dashboard-card {
+  background: #fff;
+  padding: 40px;
+  border-radius: 18px;
+  width: 420px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-card h1 {
+  margin-bottom: 15px;
+  font-size: 26px;
+  color: #1e3c72;
+}
+
+.dashboard-text {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+}
+
+/* ---------- UPLOAD SECTION ---------- */
+
+.upload-box {
+  margin: 20px 0;
+}
+
+.upload-label {
+  display: block;
+  padding: 14px;
+  border: 2px dashed #2a5298;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #2a5298;
+  font-weight: 500;
+  background: #f4f8ff;
+}
+
+.upload-label:hover {
+  background: #e9f0ff;
+}
+
+.print-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  transition: 0.3s ease;
+}
+
+.print-btn:hover {
+  opacity: 0.9;
+}
+
+/* ---------- PRINT OPTIONS ---------- */
+
+.print-options {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.option {
+  margin-bottom: 15px;
+}
+
+.option label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.option select,
+.option input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.amount-box {
+  margin: 20px 0;
+  padding: 12px;
+  background: #eef4ff;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #1e3c72;
+}
+
+.print-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- QR PAYMENT ---------- */
+
+.qr-box {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f4f8ff;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.qr-box p {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #1e3c72;
+}
+
+.qr-box img {
+  margin-bottom: 10px;
+}
+
+.paid-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+}
