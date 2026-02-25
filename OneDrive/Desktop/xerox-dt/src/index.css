@@ -750,3 +750,194 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
 }
+
+/* ---------- ADMIN DASHBOARD STYLES ---------- */
+
+/* History Section */
+.history-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.history-table th {
+  background: #f1f5f9;
+  color: #1e3c72;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.history-table td {
+  color: #334155;
+  font-size: 14px;
+}
+
+.history-table tr:hover {
+  background: #f8fafc;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status-badge.completed {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.status-badge.approved {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.status-badge.rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.approve-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #10b981;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.approve-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.reject-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ef4444;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reject-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+}
+
+.empty-state p {
+  font-size: 16px;
+}
+
+/* Paper Request Admin Section */
+.paper-request-admin-section {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.paper-requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.paper-request-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.paper-request-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.request-info {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.request-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.request-field label {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.request-field span {
+  font-size: 14px;
+  color: #1e3c72;
+  font-weight: 500;
+}
+
+.request-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.approved-text {
+  color: #059669;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.rejected-text {
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 14px;
+}

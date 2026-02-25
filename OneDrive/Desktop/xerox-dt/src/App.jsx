@@ -587,7 +587,23 @@ function StaffDashboard({ setPage }) {
                 <button
                   className="print-btn"
                   disabled={!file}
-                  onClick={() => setSubmitted(true)}
+                  onClick={() => {
+                    const printJobs = JSON.parse(localStorage.getItem("printJobs")) || [];
+                    printJobs.push({
+                      userName: "John Doe",
+                      userId: "101",
+                      printType: printType,
+                      orientation: orientation,
+                      color: color,
+                      copies: copies,
+                      pages: pages,
+                      fileName: file.name,
+                      date: new Date().toLocaleDateString(),
+                      status: "Pending"
+                    });
+                    localStorage.setItem("printJobs", JSON.stringify(printJobs));
+                    setSubmitted(true);
+                  }}
                 >
                   📤 Submit Print Request
                 </button>
@@ -639,7 +655,19 @@ function StaffDashboard({ setPage }) {
                 <button
                   className="submit-request-btn"
                   disabled={!paperType}
-                  onClick={() => setPaperSubmitted(true)}
+                  onClick={() => {
+                    const paperRequests = JSON.parse(localStorage.getItem("paperRequests")) || [];
+                    paperRequests.push({
+                      userName: "John Doe",
+                      userId: "101",
+                      paperType: paperType,
+                      quantity: paperQuantity,
+                      date: new Date().toLocaleDateString(),
+                      status: "Pending"
+                    });
+                    localStorage.setItem("paperRequests", JSON.stringify(paperRequests));
+                    setPaperSubmitted(true);
+                  }}
                 >
                   📤 Submit Paper Request
                 </button>
@@ -648,7 +676,7 @@ function StaffDashboard({ setPage }) {
           )}
         </div>
       </div>
-    </div>
+ 9   </div>
   );
 }
 
@@ -656,12 +684,211 @@ function StaffDashboard({ setPage }) {
 /* ---------- ADMIN DASHBOARD ---------- */
 
 function AdminDashboard({ setPage }) {
-  return (
-    <div className="dashboard">
-      <h1>🛠 Admin Dashboard</h1>
-      <p>Manage users, documents and reports.</p>
+  const [selectedOption, setSelectedOption] = useState("history");
 
-      <button onClick={() => setPage("login")}>Logout</button>
+  // Load data from localStorage
+  const [printJobs, setPrintJobs] = useState(() => {
+    const saved = localStorage.getItem("printJobs");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [paperRequests, setPaperRequests] = useState(() => {
+    const saved = localStorage.getItem("paperRequests");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Approve paper request
+  const approvePaperRequest = (index) => {
+    const updated = [...paperRequests];
+    updated[index].status = "Approved";
+    setPaperRequests(updated);
+    localStorage.setItem("paperRequests", JSON.stringify(updated));
+  };
+
+  // Reject paper request
+  const rejectPaperRequest = (index) => {
+    const updated = [...paperRequests];
+    updated[index].status = "Rejected";
+    setPaperRequests(updated);
+    localStorage.setItem("paperRequests", JSON.stringify(updated));
+  };
+
+  // Update print job status
+  const updatePrintStatus = (index, status) => {
+    const updated = [...printJobs];
+    updated[index].status = status;
+    setPrintJobs(updated);
+    localStorage.setItem("printJobs", JSON.stringify(updated));
+  };
+
+  return (
+    <div className="dashboard-bg">
+      <div className="staff-layout">
+        {/* Left Sidebar - 30% */}
+        <div className="staff-sidebar">
+          <div className="sidebar-profile">
+            <div className="sidebar-avatar">⚙️</div>
+            <h3>Admin</h3>
+            <p>Administrator</p>
+          </div>
+
+          <div className="sidebar-menu">
+            <button
+              className={`menu-item ${selectedOption === "history" ? "active" : ""}`}
+              onClick={() => setSelectedOption("history")}
+            >
+              <span className="menu-icon">📋</span> History
+            </button>
+
+            <button
+              className={`menu-item ${selectedOption === "paperRequest" ? "active" : ""}`}
+              onClick={() => setSelectedOption("paperRequest")}
+            >
+              <span className="menu-icon">📄</span> Paper Request
+            </button>
+          </div>
+
+          <button className="sidebar-logout" onClick={() => setPage("login")}>
+            🚪 Logout
+          </button>
+        </div>
+
+        {/* Right Content Area - 70% */}
+        <div className="staff-content">
+          {selectedOption === "history" && (
+            <>
+              <div className="content-header">
+                <h2>📋 Print History</h2>
+                <p>View all print requests from staff</p>
+              </div>
+              <div className="history-section">
+                {printJobs.length === 0 ? (
+                  <div className="empty-state">
+                    <p>No print jobs yet</p>
+                  </div>
+                ) : (
+                  <table className="history-table">
+                    <thead>
+                      <tr>
+                        <th>User Name</th>
+                        <th>Print Type</th>
+                        <th>Copies</th>
+                        <th>Pages</th>
+                        <th>Total Papers</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {printJobs.map((job, index) => (
+                        <tr key={index}>
+                          <td>{job.userName || "Staff User"}</td>
+                          <td>{job.printType || "Assignment"}</td>
+                          <td>{job.copies || 1}</td>
+                          <td>{job.pages || 1}</td>
+                          <td>{(job.copies || 1) * (job.pages || 1)}</td>
+                          <td>{job.date || new Date().toLocaleDateString()}</td>
+                          <td>
+                            <span className={`status-badge ${job.status?.toLowerCase() || "pending"}`}>
+                              {job.status || "Pending"}
+                            </span>
+                          </td>
+                          <td>
+                            <div className="action-buttons">
+                              {job.status !== "Completed" && (
+                                <>
+                                  <button
+                                    className="approve-btn"
+                                    onClick={() => updatePrintStatus(index, "Completed")}
+                                  >
+                                    ✓ Complete
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </>
+          )}
+
+          {selectedOption === "paperRequest" && (
+            <>
+              <div className="content-header">
+                <h2>📄 Paper Request</h2>
+                <p>Approve or reject paper requests from staff</p>
+              </div>
+              <div className="paper-request-admin-section">
+                {paperRequests.length === 0 ? (
+                  <div className="empty-state">
+                    <p>No paper requests yet</p>
+                  </div>
+                ) : (
+                  <div className="paper-requests-list">
+                    {paperRequests.map((request, index) => (
+                      <div key={index} className="paper-request-card">
+                        <div className="request-info">
+                          <div className="request-field">
+                            <label>User Name</label>
+                            <span>{request.userName || "Staff User"}</span>
+                          </div>
+                          <div className="request-field">
+                            <label>Paper Type</label>
+                            <span>{request.paperType || "A4"}</span>
+                          </div>
+                          <div className="request-field">
+                            <label>Quantity</label>
+                            <span>{request.quantity || 1} reams</span>
+                          </div>
+                          <div className="request-field">
+                            <label>Date</label>
+                            <span>{request.date || new Date().toLocaleDateString()}</span>
+                          </div>
+                          <div className="request-field">
+                            <label>Status</label>
+                            <span className={`status-badge ${request.status?.toLowerCase() || "pending"}`}>
+                              {request.status || "Pending"}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="request-actions">
+                          {request.status === "Pending" && (
+                            <>
+                              <button
+                                className="approve-btn"
+                                onClick={() => approvePaperRequest(index)}
+                              >
+                                ✓ Approve
+                              </button>
+                              <button
+                                className="reject-btn"
+                                onClick={() => rejectPaperRequest(index)}
+                              >
+                                ✗ Reject
+                              </button>
+                            </>
+                          )}
+                          {request.status === "Approved" && (
+                            <span className="approved-text">✓ Approved</span>
+                          )}
+                          {request.status === "Rejected" && (
+                            <span className="rejected-text">✗ Rejected</span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
