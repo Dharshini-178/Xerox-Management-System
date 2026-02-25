@@ -98,11 +98,6 @@ function Login({ setPage, role, setRole }) {
           Login
         </button>
 
-        <p className="hint">
-          Staff → 101 / 123 <br />
-          Admin → admin / admin123
-        </p>
-
         {role === "staff" && (
           <p className="register-link">
             New user? <span onClick={() => setPage("register")}>Register</span>
@@ -125,7 +120,6 @@ function Register({ setPage }) {
   const [success, setSuccess] = useState(false);
 
   const handleRegister = () => {
-    // Validation
     if (!email || !username || !password || !phone) {
       setError("All fields are required");
       return;
@@ -146,10 +140,8 @@ function Register({ setPage }) {
       return;
     }
 
-    // Save user to localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
     
-    // Check if email already exists
     if (users.find(u => u.email === email)) {
       setError("Email already registered");
       return;
@@ -261,7 +253,7 @@ function StaffDashboard({ setPage }) {
   const [copies, setCopies] = useState(1);
   const [pages, setPages] = useState(1);
   const [orientation, setOrientation] = useState("vertical");
-  const [printType, setPrintType] = useState("assignment");
+  const [printType, setPrintType] = useState("single-side");
   const [submitted, setSubmitted] = useState(false);
   
   // Paper request states
@@ -275,6 +267,27 @@ function StaffDashboard({ setPage }) {
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
+  // Profile edit states
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState("Dharshini");
+  const [editEmail, setEditEmail] = useState("p.dharshinilogesh@gmail.com");
+  const [editPhone, setEditPhone] = useState("6379558620");
+  const [editDepartment, setEditDepartment] = useState("ECE");
+
+  // Save profile changes
+  const saveProfile = () => {
+    setIsEditing(false);
+  };
+
+  // Cancel profile edit
+  const cancelEdit = () => {
+    setEditName("Dharshini");
+    setEditEmail("p.dharshinilogesh@gmail.com");
+    setEditPhone("6379558620");
+    setEditDepartment("ECE");
+    setIsEditing(false);
+  };
+
   if (submitted) {
     return (
       <div className="dashboard-bg">
@@ -282,7 +295,7 @@ function StaffDashboard({ setPage }) {
           <div className="staff-sidebar">
             <div className="sidebar-profile">
               <div className="sidebar-avatar">👤</div>
-              <h3>John Doe</h3>
+              <h3>{editName}</h3>
               <p>Staff ID: 101</p>
             </div>
             <div className="sidebar-menu">
@@ -309,7 +322,7 @@ function StaffDashboard({ setPage }) {
               <div className="profile-info">
                 <div className="profile-field">
                   <label>Print Type</label>
-                  <span>{printType}</span>
+                  <span>{printType === "single-side" ? "Single Side" : "Front and Back"}</span>
                 </div>
                 <div className="profile-field">
                   <label>Orientation</label>
@@ -338,7 +351,7 @@ function StaffDashboard({ setPage }) {
           <div className="staff-sidebar">
             <div className="sidebar-profile">
               <div className="sidebar-avatar">👤</div>
-              <h3>John Doe</h3>
+              <h3>{editName}</h3>
               <p>Staff ID: 101</p>
             </div>
             <div className="sidebar-menu">
@@ -386,7 +399,7 @@ function StaffDashboard({ setPage }) {
         <div className="staff-sidebar">
           <div className="sidebar-profile">
             <div className="sidebar-avatar">👤</div>
-            <h3>John Doe</h3>
+            <h3>{editName}</h3>
             <p>Staff ID: 101</p>
           </div>
           
@@ -420,11 +433,23 @@ function StaffDashboard({ setPage }) {
 
         {/* Right Content Area - 70% */}
         <div className="staff-content">
-{selectedOption === "profile" && (
+          {selectedOption === "profile" && (
             <>
-              <div className="content-header">
-                <h2>👤 My Profile</h2>
-                <p>View your staff information</p>
+              <div className="content-header-with-action">
+                <div>
+                  <h2>👤 My Profile</h2>
+                  <p>View your staff information</p>
+                </div>
+                {isEditing ? (
+                  <div className="edit-actions">
+                    <button className="save-btn" onClick={saveProfile}>💾 Save</button>
+                    <button className="cancel-btn" onClick={cancelEdit}>✖ Cancel</button>
+                  </div>
+                ) : (
+                  <button className="edit-icon-btn" onClick={() => setIsEditing(true)}>
+                    ✏️
+                  </button>
+                )}
               </div>
               <div className="profile-section">
                 <div className="profile-info">
@@ -434,27 +459,70 @@ function StaffDashboard({ setPage }) {
                   </div>
                   <div className="profile-field">
                     <label>Name</label>
-                    <span>John Doe</span>
+                    {isEditing ? (
+                      <input 
+                        type="text" 
+                        value={editName} 
+                        onChange={(e) => setEditName(e.target.value)}
+                        className="profile-edit-input"
+                      />
+                    ) : (
+                      <span>{editName}</span>
+                    )}
                   </div>
                   <div className="profile-field">
                     <label>Email</label>
-                    <span>john.doe@xerox.com</span>
+                    {isEditing ? (
+                      <input 
+                        type="email" 
+                        value={editEmail} 
+                        onChange={(e) => setEditEmail(e.target.value)}
+                        className="profile-edit-input"
+                      />
+                    ) : (
+                      <span>{editEmail}</span>
+                    )}
                   </div>
                   <div className="profile-field">
                     <label>Phone Number</label>
-                    <span>1234567890</span>
+                    {isEditing ? (
+                      <input 
+                        type="tel" 
+                        value={editPhone} 
+                        onChange={(e) => setEditPhone(e.target.value)}
+                        className="profile-edit-input"
+                        maxLength={10}
+                      />
+                    ) : (
+                      <span>{editPhone}</span>
+                    )}
                   </div>
                   <div className="profile-field">
                     <label>Department</label>
-                    <span>ECE</span>
+                    {isEditing ? (
+                      <select 
+                        value={editDepartment} 
+                        onChange={(e) => setEditDepartment(e.target.value)}
+                        className="profile-edit-select"
+                      >
+                        <option value="ECE">ECE</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="MECH">MECH</option>
+                        <option value="CIVIL">CIVIL</option>
+                        <option value="EEE">EEE</option>
+                      </select>
+                    ) : (
+                      <span>{editDepartment}</span>
+                    )}
                   </div>
                   <div className="profile-field">
                     <label>Joined Date</label>
-                    <span>Jan 2024</span>
+                    <span>Feb 2026</span>
                   </div>
                 </div>
-                <div className="change-password-link">
-                  <span onClick={() => setShowChangePassword(true)}>🔐 Change Password</span>
+                <div className="profile-actions">
+                  <span className="change-password-link" onClick={() => setShowChangePassword(true)}>🔐 Change Password</span>
                 </div>
               </div>
 
@@ -495,7 +563,6 @@ function StaffDashboard({ setPage }) {
                             setPasswordError("Password must be at least 4 characters");
                             return;
                           }
-                          // Here you would typically save the new password
                           setPasswordSuccess(true);
                           setTimeout(() => {
                             setShowChangePassword(false);
@@ -546,9 +613,8 @@ function StaffDashboard({ setPage }) {
                   <div className="option">
                     <label>Print Type</label>
                     <select value={printType} onChange={(e) => setPrintType(e.target.value)}>
-                      <option value="assignment">Assignment</option>
-                      <option value="report">Report</option>
-                      <option value="binding">Binding</option>
+                      <option value="single-side">Single Side</option>
+                      <option value="front-and-back">Front and Back</option>
                     </select>
                   </div>
 
@@ -590,7 +656,7 @@ function StaffDashboard({ setPage }) {
                   onClick={() => {
                     const printJobs = JSON.parse(localStorage.getItem("printJobs")) || [];
                     printJobs.push({
-                      userName: "John Doe",
+                      userName: editName,
                       userId: "101",
                       printType: printType,
                       orientation: orientation,
@@ -658,7 +724,7 @@ function StaffDashboard({ setPage }) {
                   onClick={() => {
                     const paperRequests = JSON.parse(localStorage.getItem("paperRequests")) || [];
                     paperRequests.push({
-                      userName: "John Doe",
+                      userName: editName,
                       userId: "101",
                       paperType: paperType,
                       quantity: paperQuantity,
@@ -676,7 +742,7 @@ function StaffDashboard({ setPage }) {
           )}
         </div>
       </div>
- 9   </div>
+    </div>
   );
 }
 
@@ -686,7 +752,7 @@ function StaffDashboard({ setPage }) {
 function AdminDashboard({ setPage }) {
   const [selectedOption, setSelectedOption] = useState("history");
 
-  // Load data from localStorage
+  // Load data from localStorage with lazy initialization
   const [printJobs, setPrintJobs] = useState(() => {
     const saved = localStorage.getItem("printJobs");
     return saved ? JSON.parse(saved) : [];
@@ -696,6 +762,29 @@ function AdminDashboard({ setPage }) {
     const saved = localStorage.getItem("paperRequests");
     return saved ? JSON.parse(saved) : [];
   });
+
+  // Force re-render to refresh data
+  const [, setTick] = useState(0);
+  const refreshData = () => setTick(t => t + 1);
+
+  // Reload data from localStorage
+  const reloadData = () => {
+    const savedPrintJobs = localStorage.getItem("printJobs");
+    const savedPaperRequests = localStorage.getItem("paperRequests");
+    if (savedPrintJobs) {
+      setPrintJobs(JSON.parse(savedPrintJobs));
+    }
+    if (savedPaperRequests) {
+      setPaperRequests(JSON.parse(savedPaperRequests));
+    }
+  };
+
+  // Handle option change with refresh
+  const handleOptionChange = (option) => {
+    setSelectedOption(option);
+    // Reload data from localStorage when switching tabs
+    reloadData();
+  };
 
   // Approve paper request
   const approvePaperRequest = (index) => {
@@ -735,14 +824,14 @@ function AdminDashboard({ setPage }) {
           <div className="sidebar-menu">
             <button
               className={`menu-item ${selectedOption === "history" ? "active" : ""}`}
-              onClick={() => setSelectedOption("history")}
+              onClick={() => handleOptionChange("history")}
             >
               <span className="menu-icon">📋</span> History
             </button>
 
             <button
               className={`menu-item ${selectedOption === "paperRequest" ? "active" : ""}`}
-              onClick={() => setSelectedOption("paperRequest")}
+              onClick={() => handleOptionChange("paperRequest")}
             >
               <span className="menu-icon">📄</span> Paper Request
             </button>
@@ -784,7 +873,7 @@ function AdminDashboard({ setPage }) {
                       {printJobs.map((job, index) => (
                         <tr key={index}>
                           <td>{job.userName || "Staff User"}</td>
-                          <td>{job.printType || "Assignment"}</td>
+                          <td>{job.printType === "single-side" ? "Single Side" : job.printType === "front-and-back" ? "Front and Back" : job.printType}</td>
                           <td>{job.copies || 1}</td>
                           <td>{job.pages || 1}</td>
                           <td>{(job.copies || 1) * (job.pages || 1)}</td>
@@ -800,7 +889,10 @@ function AdminDashboard({ setPage }) {
                                 <>
                                   <button
                                     className="approve-btn"
-                                    onClick={() => updatePrintStatus(index, "Completed")}
+                                    onClick={() => {
+                                      updatePrintStatus(index, "Completed");
+                                      refreshData();
+                                    }}
                                   >
                                     ✓ Complete
                                   </button>
@@ -861,13 +953,19 @@ function AdminDashboard({ setPage }) {
                             <>
                               <button
                                 className="approve-btn"
-                                onClick={() => approvePaperRequest(index)}
+                                onClick={() => {
+                                  approvePaperRequest(index);
+                                  refreshData();
+                                }}
                               >
                                 ✓ Approve
                               </button>
                               <button
                                 className="reject-btn"
-                                onClick={() => rejectPaperRequest(index)}
+                                onClick={() => {
+                                  rejectPaperRequest(index);
+                                  refreshData();
+                                }}
                               >
                                 ✗ Reject
                               </button>
